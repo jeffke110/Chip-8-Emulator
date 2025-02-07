@@ -1,0 +1,38 @@
+# Ignore build artifacts
+/build/
+/Debug/
+/Release/
+/output/
+*.o
+*.elf
+*.hex
+*.bin
+*.map
+*.out
+*.a
+
+# Ignore IDE-specific files
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+*.idea/
+*.DS_Store
+
+# Ignore STM32CubeIDE files
+*.launch
+*.settings/
+*.cproject
+*.project
+*.mxproject
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Ignore dependency files
+CMakeFiles/
+CMakeCache.txt
+*.d
