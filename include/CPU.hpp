@@ -42,6 +42,7 @@ public:
     CPU();
     void reset();
     void execute_opcode(const uint16_t &opcode);
+    uint8_t getRandomByte();
 
     //instructions
     void OP_00E0(); //1  CLS: Clear the display.
