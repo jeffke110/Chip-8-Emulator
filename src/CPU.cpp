@@ -220,49 +220,130 @@ void CPU::OP_Cxkk() // RND Vx, byte: Set Vx = random byte AND kk.
 
 void CPU::OP_Dxyn() //DRW Vx, Vy, nibble: Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
 {
-    
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+	uint8_t height = opcode & 0x000Fu;
+
+	// Wrap if going beyond screen boundaries
+	uint8_t xPos = V[Vx] % VIDEO_WIDTH;
+	uint8_t yPos = V[Vy] % VIDEO_HEIGHT;
+
+	V[0xF] = 0;
+
+	for (unsigned int row = 0; row < height; ++row)
+	{
+		uint8_t spriteByte = memory[I + row];
+
+		for (unsigned int col = 0; col < 8; ++col)
+		{
+			uint8_t spritePixel = spriteByte & (0x80u >> col);
+			uint32_t* screenPixel = &video[(yPos + row) * VIDEO_WIDTH + (xPos + col)];
+
+			// Sprite pixel is on
+			if (spritePixel)
+			{
+				// Screen pixel also on - collision
+				if (*screenPixel == 0xFFFFFFFF)
+				{
+					V[0xF] = 1;
+				}
+
+				// Effectively XOR with the sprite pixel
+				*screenPixel ^= 0xFFFFFFFF;
+			}
+		}
+	}
 }
 
-void CPU::OP_Ex9E()
+void CPU::OP_Ex9E() //SKP Vx: Skip next instruction if key with the value of Vx is pressed.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t key = V[Vx];
+	if (keypad[key])
+	{
+		PC += 2;
+	}
 }
 
-void CPU::OP_ExA1()
+void CPU::OP_ExA1() //SKNP Vx: Skip next instruction if key with the value of Vx is not pressed.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t key = V[Vx];
+	if (!keypad[key])
+	{
+		PC += 2;
+	}
 }
 
-void CPU::OP_Fx07()
+void CPU::OP_Fx07() //LD Vx, DT: Set Vx = delay timer value.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    V[Vx] = delay_timer;
 }
 
-void CPU::OP_Fx0A()
+void CPU::OP_Fx0A() //LD Vx, K: Wait for a key press, store the value of the key in Vx.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	for (uint8_t key = 0; key < 16; ++key) {
+        if (keypad[key]) {
+            V[Vx] = key;
+            return;
+        }
+    }
+    PC -= 2;
 }
 
-void CPU::OP_Fx15()
+void CPU::OP_Fx15() //LD DT, Vx: Set delay timer = Vx.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    delay_timer = V[Vx];
 }
 
-void CPU::OP_Fx18()
+void CPU::OP_Fx18() //LD ST, Vx: Set sound timer = Vx.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    sound_timer = V[Vx];
 }
 
-void CPU::OP_Fx1E()
+void CPU::OP_Fx1E() //ADD I, Vx: Set I = I + Vx.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    I += V[Vx];
 }
 
-void CPU::OP_Fx29()
+void CPU::OP_Fx29() //LD F, Vx: Set I = location of sprite for digit Vx.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t digit = V[Vx];
+	I = FONT_SIZE + (5 * digit);
 }
 
-void CPU::OP_Fx33()
+void CPU::OP_Fx33() //LD B, Vx: Store BCD representation of Vx in memory locations I, I+1, and I+2.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t value = V[Vx];
+
+    memory[I + 2] = value % 10;
+    value /= 10;
+
+    memory[I + 1] = value % 10;
+    value /= 10;
+
+    memory[I] = value % 10;
 }
 
-void CPU::OP_Fx55()
+void CPU::OP_Fx55() //LD [I], Vx: Store registers V0 through Vx in memory starting at location I.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    for(uint8_t i = 0; i <= Vx; ++i){
+        memory[I + i] = V[i];
+    }
 }
 
-void CPU::OP_Fx65()
+void CPU::OP_Fx65() //LD Vx, [I]: Read registers V0 through Vx from memory starting at location I.
 {
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    for(uint8_t i = 0; i <= Vx; ++i){
+        V[i] = memory[I + i];
+    }
 }

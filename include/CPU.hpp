@@ -6,6 +6,8 @@
 #include <cstdint>
 
 const uint8_t FONT_SIZE{80};
+#define VIDEO_WIDTH 64
+#define VIDEO_HEIGHT 32
 
 class CPU
 {
