@@ -34,6 +34,7 @@ ifeq ($(OS),Windows_NT)
     FIXPATH = $(subst /,\,$1)
     RM := cmd /c del /q /f
     MD := mkdir
+    RUN_CMD := .\\$(OUTPUT)\\$(MAIN)
 else
     MAIN := main
     SOURCEDIRS := $(shell find $(SRC) -type d)
@@ -42,6 +43,7 @@ else
     FIXPATH = $1
     RM = rm -f
     MD := mkdir -p
+    RUN_CMD := ./$(OUTPUT)/$(MAIN)
 endif
 
 # Define any directories containing header files other than /usr/include
@@ -100,5 +102,5 @@ clean:
 	@echo Cleanup complete!
 
 run: all
-	./$(OUTPUTMAIN)
+	$(RUN_CMD)
 	@echo Executing 'run: all' complete!
