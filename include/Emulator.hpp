@@ -3,17 +3,15 @@
 
 #pragma once
 
+#include "Chip8.hpp"
+#include "Graphics.hpp"
+#include <chrono>
+#include <iostream>
 
-class Emulator{
-
-
-public: 
-    void print();
-
-
-
+class Emulator
+{
+public:
+    int Emulate(int argc, char **argv);
 };
 
-
-
-#endif //EMULATOR_HPP
+#endif // EMULATOR_HPP
