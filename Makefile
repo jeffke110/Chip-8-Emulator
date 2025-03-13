@@ -27,7 +27,7 @@ LIB := lib
 GLAD_C_FILE := src/glad.c
 
 ifeq ($(OS),Windows_NT)
-    MAIN := main.exe
+    MAIN := chip8.exe
     SOURCEDIRS := $(SRC)
     INCLUDEDIRS := $(INCLUDE)
     LIBDIRS := $(LIB)

@@ -11,7 +11,7 @@
 class Emulator
 {
 public:
-    int Emulate(int argc, char **argv);
+    int emulate(int argc, char **argv);
 };
 
 #endif // EMULATOR_HPP

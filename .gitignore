@@ -2,7 +2,6 @@
 /build/
 /Debug/
 /Release/
-/output/
 *.o
 *.elf
 *.hex

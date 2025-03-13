@@ -4,35 +4,60 @@
 #pragma once
 
 #include <cstdint>
+#include <chrono>
 #include <fstream>
 #include <cstring>
+#include <algorithm>
+#include <complex>
+#include <random>
+#include <string>
+#include <iostream>
 
+
+const unsigned int MEMORY_SIZE{4096};
+const unsigned int REGISTER_COUNT{16};
+const unsigned int STACK_LEVELS{16};
+const unsigned int VIDEO_HEIGHT = 32;
+const unsigned int VIDEO_WIDTH = 64;
+const unsigned int FONTSET_SIZE = 80;
+const unsigned int FONTSET_START_ADDRESS = 0x50;
+const uint16_t START_ADDRESS{0x200};
 const uint8_t FONT_SIZE{80};
-#define VIDEO_WIDTH 64
-#define VIDEO_HEIGHT 32
 
 class Chip8
 {
 public:
     Chip8();
-    void reset();
     uint8_t getRandomByte();
-    void LoadROM(char const* filename);
-	void Cycle();
+    void LoadROM(char const *filename);
+    void Cycle();
 
     uint8_t keypad[16]{};
     uint32_t video[64 * 32]{};
 
+    //GETTERS
+    uint8_t * getRegisters();
+    uint16_t * getStack();
+    uint16_t getIndex();
+    uint16_t getPC();
+    uint8_t getSP();
+    uint16_t getOpcode();
+    uint8_t getSoundTimer();
+    uint8_t getDelayTimer();
+    uint8_t *getMemory();
+    std::string getInstruction();
+
 private:
-    uint8_t memory[4096]{};
-    uint8_t V[16]{};
-    uint16_t stack[16]{};
-    uint16_t I{};
+    uint8_t memory[MEMORY_SIZE]{};
+    uint8_t registers[REGISTER_COUNT]{};
+    uint16_t stack[STACK_LEVELS]{};
+    uint16_t index{};
     uint16_t PC{};
     uint8_t SP{};
+    uint16_t opcode{};
     uint8_t sound_timer{};
     uint8_t delay_timer{};
-    uint16_t opcode{};
+    std::string instruction = "";
     const uint8_t font_data[FONT_SIZE] = {
         0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
         0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -54,7 +79,7 @@ private:
 
     // instructions
     void OP_00E0(); // 1  CLS: Clear the display.
-    void OP_00EE(); // 2  RET: Return from a subroutine. (Research)
+    void OP_00EE(); // 2  RET: Return from a subroutine.
     void OP_1nnn(); // 3  JP addr: Jump to location nnn.
     void OP_2nnn(); // 4  CALL addr: Call subroutine at nnn. (Research)
     void OP_3xkk(); // 5  SE Vx, byte: Skip next instruction if Vx = kk. (Research)
@@ -100,7 +125,8 @@ private:
     Chip8Func table8[0xE + 1];
     Chip8Func tableE[0xE + 1];
     Chip8Func tableF[0x65 + 1];
-    void setupTable();
+
+    void setup_table();
 };
 
 #endif // CHIP8_HPP
