@@ -34,14 +34,13 @@ To build and run the emulator, you need:
    ```
 
 ## Demonstration
-Use left & right arrow keys to change cycle delay
-Use up & down arrow keys to scroll through memory
+- **Use left & right arrow keys to change cycle delay** <br>
+- **Use up & down arrow keys to scroll through memory** <br>
 ### Pong
-![Preview](./demonstration.gif)
-[Watch full video](./demonstration.mp4)
+![Preview](./demonstration.gif)<br>
 To play pong: 
-Left Player: Up = '1' , Down = 'Q' 
-Right Player: Up = '4' , Down = 'R' 
+Left Player: Up = '1' , Down = 'Q'  <br>
+Right Player: Up = '4' , Down = 'R'  <br>
 
 ## Emulator Structure
 
