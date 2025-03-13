@@ -17,41 +17,30 @@ This is a simple **CHIP-8 emulator** written in C++. The CHIP-8 is a virtual mac
 To build and run the emulator, you need:
 - **C++17 or later**
 - **SDL3** (for graphics and input handling)
-- **CMake** (optional, for easy project setup)
 
-### Building the Emulator
+### Building the Emulator (Windows)
 1. Clone the repository:
    ```sh
    git clone https://github.com/your-repo/chip8-emulator.git
    cd chip8-emulator
    ```
-2. Compile using g++ (assuming SDL3 is installed):
+2. Compile using the makefile:
    ```sh
-   g++ -std=c++17 -o chip8 main.cpp chip8.cpp -lSDL3
+   make
    ```
-3. Run the emulator:
+3. Run the emulator (first argument: cycle delay, second argument: CHIP-8 ROM):
    ```sh
-   ./chip8 path/to/rom.ch8
+   ./output/chip8 10 ./games/Pong.ch8
    ```
-
-### Running a ROM
-To load a CHIP-8 ROM, pass the file path as an argument:
-```sh
-./chip8 roms/PONG.ch8
-```
 
 ## Emulator Structure
 
-### `CPU`
+### `Chip8.cpp`
 Handles instruction execution, registers, and timers.
-
-### `Memory`
 Manages CHIP-8's 4KB memory, including fonts and ROM loading.
 
-### `Display`
+### `Graphics.cpp`
 Uses SDL3 to render the 64x32 monochrome display.
-
-### `Input`
 Handles the CHIP-8 16-key keypad input.
 
 ## Supported CHIP-8 Instructions
@@ -60,11 +49,6 @@ The emulator implements all standard CHIP-8 opcodes, including:
 - `0x1NNN` – Jump to address
 - `0x6XNN` – Set register VX
 - `0xDXYN` – Draw sprite at VX, VY
-
-## Future Improvements
-- **Super CHIP-8 Support** (extended display mode and instructions)
-- **Save states** for pausing/resuming games
-- **Sound support** using SDL3 audio
 
 ## Credits
 This project was developed by Jeffrey Kedda. Inspired by various CHIP-8 emulation resources and open-source projects.

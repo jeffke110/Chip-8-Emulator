@@ -36,7 +36,7 @@ ifeq ($(OS),Windows_NT)
     MD := mkdir
     RUN_CMD := .\\$(OUTPUT)\\$(MAIN)
 else
-    MAIN := main
+    MAIN := chip8
     SOURCEDIRS := $(shell find $(SRC) -type d)
     INCLUDEDIRS := $(shell find $(INCLUDE) -type d)
     LIBDIRS := $(shell find $(LIB) -type d)
