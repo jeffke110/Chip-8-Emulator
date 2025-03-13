@@ -33,6 +33,16 @@ To build and run the emulator, you need:
    ./output/chip8 10 ./games/Pong.ch8
    ```
 
+## Demonstration
+Use left & right arrow keys to change cycle delay
+Use up & down arrow keys to scroll through memory
+### Pong
+![Preview](./demonstration.gif)
+[Watch full video](./demonstration.mp4)
+To play pong: 
+Left Player: Up = '1' , Down = 'Q' 
+Right Player: Up = '4' , Down = 'R' 
+
 ## Emulator Structure
 
 ### `Chip8.cpp`
